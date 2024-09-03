@@ -40,7 +40,8 @@ def main(hparams):
     trainer = pl.Trainer(max_epochs=10, accelerator=hparams.accelerator, devices=hparams.devices)
     trainer.fit(model_x, train_data_loader)
 
-    trainer.test(dataloaders=test_data_loader)
+    preds = trainer.test(dataloaders=test_data_loader)
+    print(preds)
 
 
 if __name__ == "__main__":
