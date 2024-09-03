@@ -28,12 +28,19 @@ def main(hparams):
          ToTensorV2()
     ])
 
-    train_data = dataset.DataMatrixDataset(root_dir="../frames/", transforms=transform)
-    print("---------------\n Dataset loaded \n ---------------")
+    train_data = dataset.DataMatrixDatasetTrain(root_dir="../part1/train/", transforms=transform)
+    print("---------------\nTrain Dataset loaded \n---------------")
     train_data_loader = DataLoader(train_data, batch_size=8)
+    
+    test_data = dataset.DataMatrixDatasetTest(root_dir="../part1/test/", transforms=transform)
+    print("---------------\nTest Dataset loaded \n---------------")
+    test_data_loader = DataLoader(test_data, batch_size=8)
+    
     model_x = LitResNet(num_classes=2)
-    trainer = pl.Trainer(max_epochs=100, accelerator=hparams.accelerator, devices=hparams.devices)
+    trainer = pl.Trainer(max_epochs=10, accelerator=hparams.accelerator, devices=hparams.devices)
     trainer.fit(model_x, train_data_loader)
+
+    trainer.test(dataloaders=test_data_loader)
 
 
 if __name__ == "__main__":

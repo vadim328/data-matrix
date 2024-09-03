@@ -20,9 +20,9 @@ class LitResNet(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         x, y = batch
         #y = torch.tensor(y)
-        y_pred = self(x)
-        loss = F.cross_entropy(y_pred, y)
-        accuracy = self.accuracy(y_pred, y)
+        y_hat = self(x)
+        loss = F.cross_entropy(y_hat, y)
+        accuracy = self.accuracy(y_hat, y)
         self.log('train_loss_step', loss, on_step=True, on_epoch=False)
         self.log('train_accuracy_step', accuracy, on_step=True, on_epoch=False)
         self.log('train_loss_epoch', loss, on_step=False, on_epoch=True)
@@ -33,7 +33,7 @@ class LitResNet(pl.LightningModule):
         x, y = batch
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
-        accuracy = self.accuracy(y_pred, y)
+        accuracy = self.accuracy(y_hat, y)
         self.log('validation_loss', loss)
         self.log('validation_accuracy', accuracy)
 
@@ -41,7 +41,7 @@ class LitResNet(pl.LightningModule):
         x, y = batch
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
-        accuracy = self.accuracy(y_pred, y)
+        accuracy = self.accuracy(y_hat, y)
         self.log('test_loss', loss)
         self.log('test_accuracy', accuracy)
 

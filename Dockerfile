@@ -26,9 +26,10 @@ RUN apt update
 RUN apt install -y default-jdk
 
 # Other packets
-RUN pip install opencv-python \ &&
-    pip install pandas
-    pip install albumentations
+RUN pip install opencv-python && \
+    pip install pandas && \
+    pip install albumentations && \
+    pip install scikit-learn
 
 # TORCHSEVER
 RUN pip install torchserve torch-model-archiver nvgpu
