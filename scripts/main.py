@@ -36,12 +36,12 @@ def main(hparams):
     print("---------------\nTest Dataset loaded \n---------------")
     test_data_loader = DataLoader(test_data, batch_size=8)
     
-    model_x = LitResNet(num_classes=2)
-    trainer = pl.Trainer(max_epochs=10, accelerator=hparams.accelerator, devices=hparams.devices)
+    model_x = LitResNet(num_classes=54)
+    trainer = pl.Trainer(max_epochs=2, accelerator=hparams.accelerator, devices=hparams.devices)
     trainer.fit(model_x, train_data_loader)
 
-    preds = trainer.test(dataloaders=test_data_loader)
-    print(preds)
+    trainer.test(dataloaders=test_data_loader)
+    print(model_x.on_test_epoch_end())
 
 
 if __name__ == "__main__":

@@ -30,6 +30,12 @@ class DataMatrixDataset(Dataset):
                         if image_path.lower().endswith(("png", "jpg", "jpeg", "bmp", "gif")):
                             image_paths.append(image_path)
                             labels.append(f"{folder_1}/{folder_2}")
+
+        self.label_encoder = LabelEncoder()
+        labels = self.label_encoder.fit_transform(labels)
+        labels = list(labels)
+        #labels = [0 if i == 0 else 1 for i in labels]
+        labels = torch.tensor(labels)
         return image_paths, labels
 
 
@@ -44,11 +50,7 @@ class DataMatrixDatasetTrain(DataMatrixDataset):
     ):
         super().__init__(root_dir)
         self.image_paths, self.labels = self.load_datast()
-
-        self.label_encoder = LabelEncoder()
-        self.labels = self.label_encoder.fit_transform(self.labels)
-        self.labels = [0 if i == 0 else 1 for i in self.labels]
-        self.labels = torch.tensor(self.labels)
+        
         #print(self.labels[0], self.image_paths[0])
         self.transforms = transforms if transforms is not None else None
 
@@ -79,11 +81,7 @@ class DataMatrixDatasetTest(DataMatrixDataset):
     ):
         super().__init__(root_dir)
         self.image_paths, self.labels = self.load_datast()
-
-        self.label_encoder = LabelEncoder()
-        self.labels = self.label_encoder.fit_transform(self.labels)
-        self.labels = [0 if i == 0 else 1 for i in self.labels]
-        self.labels = torch.tensor(self.labels)
+        
         self.transforms = transforms if transforms is not None else None
 
     def __len__(self):
