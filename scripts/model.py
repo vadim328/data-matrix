@@ -1,4 +1,5 @@
 from torchvision.models import resnet50, ResNet50_Weights
+from torchvision.models import efficientnet_b3, EfficientNet_B3_Weights
 from torch.nn import functional as F
 from torch.utils.data import random_split
 import pytorch_lightning as pl
@@ -10,8 +11,9 @@ import torchmetrics
 class LitResNet(pl.LightningModule):
     def __init__(self, num_classes):
         super().__init__()
-        self.model = resnet50(weights=ResNet50_Weights.IMAGENET1K_V2)
-        self.model.fc = torch.nn.Linear(self.model.fc.in_features, num_classes)
+        self.model = efficientnet_b3(weights=EfficientNet_B3_Weights.IMAGENET1K_V1)
+        #self.model.fc = torch.nn.Linear(self.model.fc.in_features, num_classes) # for resnet
+        self.model.classifier[1] = nn.Linear(self.model.classifier[1].in_features, num_classes)
         self.accuracy = torchmetrics.classification.Accuracy(task="multiclass", num_classes=num_classes)
         self.test_predictions = []
         self.acc_score = None
